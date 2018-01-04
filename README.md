@@ -5,4 +5,4 @@ The project is split into the following files:
 - poi_id.py : contains project codes and my analysis
 - tester.py : unmodified file to be used to test and review the project
 - data set: TBC
-- Analysis: TBC
+- Project documentation: TBC
