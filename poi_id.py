@@ -12,31 +12,32 @@ from tester import dump_classifier_and_data
 from enron_other_script import *
 from sklearn.feature_selection import SelectKBest, f_classif
 
+font = {'family' : 'normal',
+        'weight' : 'normal',
+        'size'   : 5}
+
+plt.rc('font', **font)
+
 
 ### Task 1: Select what features to use. -----------------------------------
 ### features_list is a list of strings, each of which is a feature name.
 
-features_list = ['poi',
-                 'exercised_stock_options', 
-                 'total_stock_value', 
-                 'bonus', 
-                 'salary', 
-                 'deferred_income', 
-                 'long_term_incentive', 
-                 'restricted_stock', 
-                 'total_payments', 
-                 'shared_receipt_with_poi', 
-                 'loan_advances',
-                 'expenses', 
-                 'from_poi_to_this_person',
-                 'other',  
-                 'from_this_person_to_poi']
+### Below is a list of all features. Final feature list will be created after
+### running SelectKBest in the section, 'Task 3', below.
+
+features_list = ['poi', 'salary', 'deferral_payments', 'total_payments',
+'loan_advances', 'bonus', 'restricted_stock_deferred', 'deferred_income',
+'total_stock_value', 'expenses', 'exercised_stock_options', 'other',
+'long_term_incentive', 'restricted_stock', 'director_fees' ,'to_messages',
+'from_poi_to_this_person', 'from_messages','from_this_person_to_poi', 
+'shared_receipt_with_poi']
+
 
 ### Load the dictionary containing the dataset
 with open("final_project_dataset.pkl", "r") as data_file:
     data_dict = pickle.load(data_file)
 
-### Missing values, 'NaN', noted whithin many features. Set 'NaN' to zero before
+### Missing values, 'NaN', noted within many features. Set 'NaN' to zero before
 
 for k in data_dict.values()[0].keys():
 	ctr = 0
@@ -69,9 +70,23 @@ data_dict.pop('LOCKHART EUGENE E', 0)
 create_poi_email_ratio(data_dict, features_list)
 
 ### Feature selection: SelectKBest
+feature_scores, my_features = select_features(data_dict, features_list, k=6)
 
-select_features(data_dict, features_list, 15)
+# ### Plot feature scores
 
+# y_pos = np.arange(len(feature_scores))
+# performance = [score[1] for score in feature_scores]
+ 
+# plt.bar(y_pos, performance, align='center', alpha=0.5)
+# plt.xticks(y_pos, [score[0] for score in feature_scores], rotation=50)
+# plt.ylabel('Scores')
+# plt.title('SelectKBest Scores')
+ 
+# plt.show()
+
+
+### Ensure features_list only includes the selected features from SelectKBest
+features_list =['poi'] + my_features
 
 ### Store to my_dataset for easy export below.
 my_dataset = data_dict
@@ -81,6 +96,7 @@ my_dataset = data_dict
 data = featureFormat(my_dataset, features_list, sort_keys = True)
 labels, features = targetFeatureSplit(data)
 
+
 ### Feature Scaling using MinMaxScaler
 from sklearn.preprocessing import MinMaxScaler
 
@@ -88,7 +104,7 @@ scaler = MinMaxScaler()
 features = scaler.fit_transform(features)
 
 
-### Task 4: Try a varity of classifiers ----------------------------------------
+### Task 4: Try a variety of classifiers ----------------------------------------
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
@@ -118,18 +134,18 @@ evaluate_classifier(clf, features, labels)
 
 ### SVM: 5 C values are used to tune the algorithm
 
-for c in [1, 10, 100, 1000, 10000]:
-    clf = SVC(kernel="rbf", C=c)
-    print "SVM with C =", c
-    evaluate_classifier(clf, features, labels)
+# for c in [1, 10, 100, 1000, 10000]:
+#     clf = SVC(kernel="rbf", C=c)
+#     print "SVM with C =", c
+#     evaluate_classifier(clf, features, labels)
 
 
 ### Decision Tree: 5 min_sample_split values are used to tune the algorithm
 
-for split in [2, 5, 8, 10, 15]:
-    clf = DecisionTreeClassifier(min_samples_split = split)
-    print "DecisionTreeClassifier with min_samples_split =", split
-    evaluate_classifier(clf, features, labels)
+# for split in [2, 5, 8, 10, 15]:
+#     clf = DecisionTreeClassifier(min_samples_split = split)
+#     print "DecisionTreeClassifier with min_samples_split =", split
+#     evaluate_classifier(clf, features, labels)
 
 
 # Final Pick: GaussianNB

@@ -94,7 +94,7 @@ def create_poi_email_ratio(data_dict, features_list):
 
 
 # SelectKBest
-def select_features(data_dict, features_list, k):
+def select_features(data_dict, features_list, k=20):
 	data = featureFormat(data_dict, features_list)
 	labels, features = targetFeatureSplit(data)
 
@@ -103,8 +103,11 @@ def select_features(data_dict, features_list, k):
 	scores = selector.scores_
 	tuples = zip(features_list[1:], scores)
 	feature_scores = sorted(tuples, key=lambda x: x[1], reverse=True)
+	my_features = []
+	for i in feature_scores:
+		my_features.append(i[0])
 
-	return feature_scores[:k]
+	return feature_scores[:k], my_features[:k]
 
 
 # Validation and Evaluation----------------------------------------------------

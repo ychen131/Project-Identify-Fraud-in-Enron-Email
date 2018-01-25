@@ -106,8 +106,19 @@ out whether the proportion of interaction with POI will play an role in our
 model. This might also be able to increase the effectiveness of a few features 
 such as `from_messages` and `to_messages`.
 
-The new feature, `poi_email_ratio`, is the total number of POI email interaction 
-as a proportion of total email sent and received by an employee.
+The new feature, `poi_email_ratio`, is the total number of POI email interaction
+as a proportion of total email sent and received by an employee. 
+
+The new feature came 14th when running the SelectKBest (see section
+'Intellegently Select Features' for details regarding SelectKBest). The
+inclusion of `poi_email_ratio` gives a more balanced results. See below:
+
+| With new feature| No. of features| Accuracy | Precision | Recall  | F1 Score|
+| ----------------| ---------------| --------:| --------: | -------:|--------:|
+| Yes             | 15             |   0.8072 |    0.3223 |  0.3249 |   0.2859|
+| No              | 15             |   0.6548 |    0.2417 |  0.4397 |   0.2676|
+
+
 
 ### Intelligently Select Features
 
@@ -117,12 +128,19 @@ model. This will help reduce noise in the  classification and saving processing
 time.
 
 We chose to use `SelectKBest` algorithm from Scikit-learn using `f_classif` as
-scoring function.  The `f_classif` method computes the ANOVA F-value between labels and
-features for classification tasks. A higher score means the feature is more
-influential.
+scoring function.  The `f_classif` method computes the ANOVA F-value between
+labels and features for classification tasks. A higher score means the feature
+is more influential. (Feature, 'email_address' is not included in this
+analysis as this feature is a matter of fact and does not add much to our
+model.)
 
-We picked 15 features to be included in our model. (14 features from the
-original data plus the newly created feature, `poi_email_ratio`).
+The scores for all features can be find below:
+![SelectKBest Scores](feature_score_all.png)
+
+From the plot we can see, the last 6 features in the plot are below score 5 and
+are probably not going to have a great impact to our model. We picked top 15
+features to feed into a few different algorithms. (14 features from the original
+data plus the newly created feature, `poi_email_ratio`). 
 
 The scoring from `SelectKBest` can be found below:
 ```py
@@ -144,6 +162,11 @@ The scoring from `SelectKBest` can be found below:
   ('from_this_person_to_poi', 2.382)]
 
 ```
+
+After we chose our final algorithm, we have tried a few different value of 'k'.
+k value equals to 6 gives the best evaluation metrics  hence the top 8 features 
+were included in our final model.
+
 
 ### Feature Scaling
 
@@ -182,23 +205,31 @@ approximate best algorithm before fine tuning.
 if you don’t do this well?  How did you tune the parameters of your particular
 algorithm? What parameters did you tune?
 
+Tuning the parameters helps the model to maximise the evaluation metrics.
+This invloves including appropriate number of parameters. For each parameter,
+finding the input that maximize the evaluation metrics. Without tuning the
+parameters, algorithms might underfit or overfit hence providing suboptimal
+results.
+
 In the following, we assess each classifier by averaging each of the
 measures over multiple trials, for randomly chosen training/test data splits.
 
-**Gaussian**:
-There is only one parameter `prior` within GaussianNB model which is not 
-relevant in our case, hence no tuning is performed for this model.
+**Gaussian**: There is only one parameter `prior` within GaussianNB model which
+is not  relevant in our case, hence no tuning is performed for this model. We
+have however changed the number of features selected after GaussianNB was
+selected as our final algorithm pick.
 
-The result for Gaussian is shown below:
+The results for GaussianNB with different number of features ares shown below:
 
-| Classifier        | Accuracy | Precision | Recall  | F1 Score|
+| No. of features   | Accuracy | Precision | Recall  | F1 Score|
 | ------------------| --------:| --------: | -------:|--------:|
-| GaussianNB        |   0.7996 |    0.3106 |  0.3226 |   0.2766|
-
+| 15                |   0.8072 |    0.3223 |  0.3249 |   0.2859| 
+| 10                |   0.8044 |    0.3296 |  0.3513 |   0.2991|
+| 6                 |   0.8581 |    0.4600 |  0.3860 |   0.3895|
 
 
 We tuned the following parameters systematically of the SVM and Decision Tree
-Classifiers:
+Classifiers (with 15 features):
 
 **SVM**: `C`, which controls trade-off between smooth decision boundary and 
 classifying training points correctly.
@@ -283,6 +314,9 @@ not mean much.
 All evaluation metrics are included in the section, 'Tune the Algorithm'. The
 final algorithm gives the following result:
 
-| Classifier        | Accuracy | Precision | Recall  | F1 Score|
-| ------------------| --------:| --------: | -------:|--------:|
-| GaussianNB        |   0.7996 |    0.3106 |  0.3226 |   0.2766|
+| Classifier  | Accuracy | Precision | Recall  | F1 Score|No. of features|
+| ------------| --------:| --------: | -------:|--------:|---------------|
+| GaussianNB  |   0.8581 |    0.4600 |  0.3860 |   0.3895|6              |
+
+
+
