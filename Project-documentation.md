@@ -111,7 +111,8 @@ as a proportion of total email sent and received by an employee.
 
 The new feature came 14th when running the SelectKBest (see section
 'Intelligently Select Features' for details regarding SelectKBest). The
-inclusion of `poi_email_ratio` gives a more balanced results. See below:
+inclusion of `poi_email_ratio` gives a more balanced results when using
+GaussianNB. See below:
 
 | With new feature| No. of features| Accuracy | Precision | Recall  | F1 Score|
 | ----------------| ---------------| --------:| --------: | -------:|--------:|
@@ -206,10 +207,10 @@ if you don’t do this well?  How did you tune the parameters of your particular
 algorithm? What parameters did you tune?
 
 Tuning the parameters helps the model to maximise the evaluation metrics.
-This involves including appropriate number of parameters. For each parameter,
-finding the input that maximize the evaluation metrics. Without tuning the
-parameters, algorithms might underfit or overfit hence providing suboptimal
-results.
+Each classifier has its own set of parameters, affecting the behaviour and
+performance of the evaluation in different ways. Tuning the parameters involves
+testing different values and observing the effect on the data, taking care to
+avoid suboptimal results, for example, through under or over-fitting.
 
 In the following, we assess each classifier by averaging each of the
 measures over multiple trials, for randomly chosen training/test data splits.
