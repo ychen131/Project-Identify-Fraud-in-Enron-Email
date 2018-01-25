@@ -110,7 +110,7 @@ The new feature, `poi_email_ratio`, is the total number of POI email interaction
 as a proportion of total email sent and received by an employee. 
 
 The new feature came 14th when running the SelectKBest (see section
-'Intellegently Select Features' for details regarding SelectKBest). The
+'Intelligently Select Features' for details regarding SelectKBest). The
 inclusion of `poi_email_ratio` gives a more balanced results. See below:
 
 | With new feature| No. of features| Accuracy | Precision | Recall  | F1 Score|
@@ -135,7 +135,7 @@ analysis as this feature is a matter of fact and does not add much to our
 model.)
 
 The scores for all features can be find below:
-![SelectKBest Scores](feature_score_all.png)
+![SelectKBest Scores](feature_scores_all.png)
 
 From the plot we can see, the last 6 features in the plot are below score 5 and
 are probably not going to have a great impact to our model. We picked top 15
@@ -206,7 +206,7 @@ if you don’t do this well?  How did you tune the parameters of your particular
 algorithm? What parameters did you tune?
 
 Tuning the parameters helps the model to maximise the evaluation metrics.
-This invloves including appropriate number of parameters. For each parameter,
+This involves including appropriate number of parameters. For each parameter,
 finding the input that maximize the evaluation metrics. Without tuning the
 parameters, algorithms might underfit or overfit hence providing suboptimal
 results.
@@ -219,7 +219,7 @@ is not  relevant in our case, hence no tuning is performed for this model. We
 have however changed the number of features selected after GaussianNB was
 selected as our final algorithm pick.
 
-The results for GaussianNB with different number of features ares shown below:
+The results for GaussianNB with different number of features are shown below:
 
 | No. of features   | Accuracy | Precision | Recall  | F1 Score|
 | ------------------| --------:| --------: | -------:|--------:|
