@@ -111,14 +111,13 @@ as a proportion of total email sent and received by an employee.
 
 The new feature came 14th when running the SelectKBest (see section
 'Intelligently Select Features' for details regarding SelectKBest). The
-inclusion of `poi_email_ratio` gives a more balanced results when using
+inclusion of `poi_email_ratio` gives a more balanced result when using
 GaussianNB. See below:
 
 | With new feature| No. of features| Accuracy | Precision | Recall  | F1 Score|
 | ----------------| ---------------| --------:| --------: | -------:|--------:|
 | Yes             | 15             |   0.8072 |    0.3223 |  0.3249 |   0.2859|
 | No              | 15             |   0.6548 |    0.2417 |  0.4397 |   0.2676|
-
 
 
 ### Intelligently Select Features
@@ -164,9 +163,9 @@ The scoring from `SelectKBest` can be found below:
 
 ```
 
-After we chose our final algorithm, we have tried a few different value of 'k'.
-k value equals to 6 gives the best evaluation metrics  hence the top 8 features 
-were included in our final model.
+After we chose our final algorithm, we have tried a few different value of `k`.
+`k` value equals to 6 gives the best evaluation metrics  hence the top 6
+features  were included in our final model.
 
 
 ### Feature Scaling
