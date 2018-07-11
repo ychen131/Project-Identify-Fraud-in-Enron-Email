@@ -86,7 +86,7 @@ observation from  our analysis.
 Furthermore, employee `LOCKHART EUGENE E` does not have any data, hence will be 
 removed from our analysis.
 
-After removing the outliers, the distribution of observations are relatively more
+After removing the outliers, the distribution of observations are relatively less
 concentrated than before. (See Below)
 
 ![Salary vs Bonus](salary_vs_bonus_after.png)
